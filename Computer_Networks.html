@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Models: OSI and TCP/IP - Comprehensive Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            font-size: 12pt;
+        }
+
+        .book-container {
+            max-width: 21cm;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .page {
+            page-break-after: always;
+            min-height: 25cm;
+            padding: 1cm;
+            position: relative;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Cover Page */
+        .cover-page {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin: -1cm;
+            padding: 2cm;
+            min-height: 29.7cm;
+        }
+
+        .network-icon {
+            font-size: 4em;
+            margin-bottom: 1cm;
+        }
+
+        .book-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 0.5cm;
+            letter-spacing: -1px;
+        }
+
+        .book-subtitle {
+            font-size: 1.3em;
+            margin-bottom: 2cm;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .author-info {
+            font-size: 1.1em;
+            margin-top: 2cm;
+            opacity: 0.8;
+        }
+
+        /* Table of Contents */
+        .toc-page {
+            background: #f8f9fa;
+            margin: -1cm;
+            padding: 2cm;
+        }
+
+        .toc-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2cm;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5cm;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8cm;
+            padding: 0.5cm;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+
+        .toc-chapter {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .toc-page-num {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        /* Content Pages */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2cm;
+            padding-bottom: 0.5cm;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .page-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 0.3cm;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .content-section {
+            margin-bottom: 1.5cm;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 0.8cm;
+            padding-left: 0.5cm;
+            border-left: 3px solid #3498db;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 0.5cm;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .subsection-title {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-bottom: 0.5cm;
+            margin-top: 1cm;
+            font-weight: bold;
+        }
+
+        .content-text {
+            font-size: 11pt;
+            line-height: 1.6;
+            text-align: justify;
+            margin-bottom: 0.8cm;
+            text-indent: 1em;
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border: 1px solid #3498db;
+            border-left: 4px solid #3498db;
+            padding: 1cm;
+            margin: 1cm 0;
+            border-radius: 5px;
+        }
+
+        .highlight-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 0.5cm;
+            color: #2c3e50;
+        }
+
+        .info-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-left: 4px solid #27ae60;
+            padding: 1cm;
+            margin: 1cm 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border: 1px solid #f39c12;
+            border-left: 4px solid #f39c12;
+            padding: 1cm;
+            margin: 1cm 0;
+            border-radius: 5px;
+        }
+
+        /* Lists */
+        .custom-list {
+            margin: 1cm 0;
+            padding-left: 2cm;
+        }
+
+        .custom-list li {
+            margin-bottom: 0.5cm;
+            line-height: 1.6;
+        }
+
+        /* Tables */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1cm 0;
+            font-size: 10pt;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 0.5cm;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* OSI Model Visualization */
+        .osi-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2cm;
+            margin: 1cm 0;
+        }
+
+        .layer {
+            padding: 0.4cm 0.8cm;
+            border: 1px solid #ddd;
+            color: #333;
+            font-weight: bold;
+            text-align: left;
+            font-size: 10pt;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .layer-number {
+            background: rgba(0,0,0,0.1);
+            padding: 0.2cm 0.4cm;
+            border-radius: 50%;
+            min-width: 1cm;
+            text-align: center;
+        }
+
+        .layer-7 { background: #ffe6e6; border-left: 4px solid #e74c3c; }
+        .layer-6 { background: #fff2e6; border-left: 4px solid #e67e22; }
+        .layer-5 { background: #fff9e6; border-left: 4px solid #f39c12; }
+        .layer-4 { background: #e8f5e8; border-left: 4px solid #2ecc71; }
+        .layer-3 { background: #e6f3ff; border-left: 4px solid #3498db; }
+        .layer-2 { background: #f0e6ff; border-left: 4px solid #9b59b6; }
+        .layer-1 { background: #f0f0f0; border-left: 4px solid #34495e; }
+
+        /* TCP/IP Model */
+        .tcpip-layers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5cm;
+            margin: 1cm 0;
+        }
+
+        .tcpip-layer {
+            background: #f0f8ff;
+            border: 1px solid #00b894;
+            border-left: 4px solid #00b894;
+            padding: 0.8cm;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .tcpip-layer h3 {
+            font-size: 1.1em;
+            margin-bottom: 0.3cm;
+            color: #2c3e50;
+        }
+
+        .tcpip-layer p {
+            font-size: 10pt;
+            line-height: 1.4;
+        }
+
+        /* Protocol boxes */
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5cm;
+            margin: 1cm 0;
+        }
+
+        .protocol-box {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 0.5cm;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 10pt;
+        }
+
+        .protocol-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.2cm;
+        }
+
+        /* References Page */
+        .reference-item {
+            background: #fafafa;
+            padding: 0.8cm;
+            margin: 0.5cm 0;
+            border-radius: 5px;
+            border-left: 3px solid #ff7675;
+            font-size: 10pt;
+            line-height: 1.4;
+        }
+
+        .reference-item strong {
+            color: #2d3436;
+        }
+
+        /* Page Numbers */
+        .page-number {
+            position: absolute;
+            bottom: 0.5cm;
+            right: 0.5cm;
+            background: #3498db;
+            color: white;
+            width: 1cm;
+            height: 1cm;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+
+        /* Chapter headers */
+        .chapter-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -1cm -1cm 2cm -1cm;
+            padding: 2cm 2cm 1cm 2cm;
+            text-align: center;
+        }
+
+        .chapter-number {
+            font-size: 1.2em;
+            opacity: 0.8;
+            margin-bottom: 0.5cm;
+        }
+
+        .chapter-title {
+            font-size: 2.2em;
+            font-weight: bold;
+        }
+
+        /* Print specific styles */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .page {
+                page-break-inside: avoid;
+            }
+            
+            .content-section {
+                page-break-inside: avoid;
+            }
+
+            .tcpip-layers {
+                grid-template-columns: 1fr;
+            }
+
+            .protocol-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <!-- Cover Page -->
+        <div class="page cover-page">
+            <div class="network-icon">🌐</div>
+            <h1 class="book-title">Network Models</h1>
+            <p class="book-subtitle">A Comprehensive Guide to OSI and TCP/IP Architectures</p>
+            <div class="author-info">
+                <p>Digital Guide for Data Communication & Networks</p>
+                <p style="margin-top: 1cm;">Academic Year 2024-25</p>
+                <p style="margin-top: 1cm; font-size: 0.9em;">Created with AI Tools as Required</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="page toc-page">
+            <h1 class="toc-title">Table of Contents</h1>
+            
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 1: Introduction to Network Models</span>
+                <span class="toc-page-num">3</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 2: The OSI Reference Model</span>
+                <span class="toc-page-num">5</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 3: OSI Layer Details</span>
+                <span class="toc-page-num">7</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 4: The TCP/IP Model</span>
+                <span class="toc-page-num">11</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 5: TCP/IP Protocols and Services</span>
+                <span class="toc-page-num">13</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 6: Model Comparison and Analysis</span>
+                <span class="toc-page-num">15</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 7: Practical Applications</span>
+                <span class="toc-page-num">17</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">Chapter 8: Future of Network Models</span>
+                <span class="toc-page-num">19</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-chapter">References and Bibliography</span>
+                <span class="toc-page-num">21</span>
+            </div>
+
+            <div class="page-number">2</div>
+        </div>
+
+        <!-- Chapter 1: Introduction -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 1</div>
+                <div class="chapter-title">Introduction to Network Models</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">What are Network Models?</h2>
+                <p class="content-text">
+                    Network models are conceptual frameworks that define how data communication occurs across computer networks. These models provide a structured approach to understanding the complex processes involved in transmitting data from one device to another across various network infrastructures. They serve as blueprints for network architects, engineers, and developers to design, implement, and troubleshoot network systems effectively.
+                </p>
+                <p class="content-text">
+                    The primary purpose of network models is to standardize communication protocols, ensure interoperability between different systems, and provide a layered approach to network design. By breaking down networking into manageable layers, engineers and developers can focus on specific aspects of communication while maintaining compatibility across the entire system. This modular approach enables innovation and improvement in individual layers without affecting the entire network stack.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Key Benefits of Network Models</div>
+                <ul class="custom-list">
+                    <li><strong>Standardization:</strong> Ensures consistent communication protocols across different vendors and systems, promoting universal compatibility</li>
+                    <li><strong>Modularity:</strong> Allows independent development and troubleshooting of specific network layers without affecting others</li>
+                    <li><strong>Interoperability:</strong> Enables different systems and technologies to work together seamlessly across diverse platforms</li>
+                    <li><strong>Scalability:</strong> Provides a framework for expanding and upgrading network infrastructure as requirements grow</li>
+                    <li><strong>Educational Value:</strong> Offers a structured way to learn and teach networking concepts systematically</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Historical Context and Evolution</h2>
+                <p class="content-text">
+                    The development of network models emerged from the need to create universal standards for computer communication. In the early days of networking during the 1960s and 1970s, different manufacturers developed proprietary protocols that were incompatible with each other. This led to isolated networks that couldn't communicate, severely limiting the potential of computer networking.
+                </p>
+                <p class="content-text">
+                    The recognition of this problem led to collaborative efforts by international organizations, research institutions, and technology companies to develop standardized approaches to networking. The most significant outcomes of these efforts were the OSI (Open Systems Interconnection) model and the TCP/IP (Transmission Control Protocol/Internet Protocol) model, both of which continue to influence modern networking today.
+                </p>
+            </div>
+
+            <div class="page-number">3</div>
+        </div>
+
+        <!-- Chapter 1 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Types of Network Models</h2>
+                <p class="content-text">
+                    Network models can be categorized into different types based on their purpose and scope. The two most prominent and widely studied models are the OSI Reference Model and the TCP/IP Model. Each serves different purposes and offers unique perspectives on network communication.
+                </p>
+
+                <div class="subsection-title">Reference Models vs. Protocol Suites</div>
+                <p class="content-text">
+                    It's important to distinguish between reference models and protocol suites. Reference models, like the OSI model, are theoretical frameworks that provide a conceptual understanding of how network communication should work. Protocol suites, like TCP/IP, are actual implementations of networking protocols that are used in real-world systems.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">Why Study Network Models?</div>
+                <p>Understanding network models is crucial for several reasons:</p>
+                <ul class="custom-list">
+                    <li>They provide a common language for discussing network concepts</li>
+                    <li>They help in troubleshooting network problems systematically</li>
+                    <li>They guide the development of new networking technologies</li>
+                    <li>They facilitate understanding of how different network components interact</li>
+                    <li>They serve as the foundation for network certification programs</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Modern Relevance</h2>
+                <p class="content-text">
+                    Despite being developed decades ago, network models remain highly relevant in today's digital landscape. With the advent of cloud computing, Internet of Things (IoT), mobile networking, and emerging technologies like 5G and software-defined networking (SDN), these foundational models continue to provide the conceptual framework for understanding and implementing modern network solutions.
+                </p>
+                <p class="content-text">
+                    The principles embodied in these models are also being applied to new domains such as network security, where layered security models mirror the layered approach of network communication models. This demonstrates the enduring value and applicability of structured, layered approaches to complex system design.
+                </p>
+            </div>
+
+            <div class="page-number">4</div>
+        </div>
+
+        <!-- Chapter 2: OSI Model Overview -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 2</div>
+                <div class="chapter-title">The OSI Reference Model</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Overview and Development</h2>
+                <p class="content-text">
+                    The Open Systems Interconnection (OSI) model, developed by the International Organization for Standardization (ISO) in 1984, is a conceptual framework that standardizes the functions of a telecommunication or computing system into seven distinct layers. The model was created to address the need for universal standards that would enable different computer systems to communicate with each other regardless of their underlying architecture or manufacturer.
+                </p>
+                <p class="content-text">
+                    The OSI model follows a hierarchical structure where each layer adds its own functionality to the data being transmitted. Data moves down through the layers on the sending side (encapsulation) and up through the layers on the receiving side (decapsulation). This process ensures that each layer can focus on its specific responsibilities while relying on the services provided by adjacent layers.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">The Seven-Layer Architecture</h2>
+                <p class="content-text">
+                    The OSI model's seven-layer structure represents a complete breakdown of the network communication process. Each layer has specific responsibilities and interacts only with the layers immediately above and below it. This design promotes modularity and allows for independent development and improvement of each layer's functionality.
+                </p>
+            </div>
+
+            <div class="osi-layers">
+                <div class="layer layer-7">
+                    <span>Layer 7: Application Layer</span>
+                    <span class="layer-number">7</span>
+                </div>
+                <div class="layer layer-6">
+                    <span>Layer 6: Presentation Layer</span>
+                    <span class="layer-number">6</span>
+                </div>
+                <div class="layer layer-5">
+                    <span>Layer 5: Session Layer</span>
+                    <span class="layer-number">5</span>
+                </div>
+                <div class="layer layer-4">
+                    <span>Layer 4: Transport Layer</span>
+                    <span class="layer-number">4</span>
+                </div>
+                <div class="layer layer-3">
+                    <span>Layer 3: Network Layer</span>
+                    <span class="layer-number">3</span>
+                </div>
+                <div class="layer layer-2">
+                    <span>Layer 2: Data Link Layer</span>
+                    <span class="layer-number">2</span>
+                </div>
+                <div class="layer layer-1">
+                    <span>Layer 1: Physical Layer</span>
+                    <span class="layer-number">1</span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div class="highlight-title">Important Note</div>
+                <p>While the OSI model provides an excellent theoretical framework for understanding networking concepts, it's important to note that most real-world implementations don't strictly follow all seven layers. The TCP/IP model, which we'll explore later, offers a more practical approach that aligns better with actual network implementations.</p>
+            </div>
+
+            <div class="page-number">5</div>
+        </div>
+
+        <!-- Chapter 2 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Data Flow and Encapsulation</h2>
+                <p class="content-text">
+                    One of the key concepts in the OSI model is the process of data encapsulation and decapsulation. When data is transmitted from one system to another, it travels down through the layers on the sending side, with each layer adding its own header (and sometimes trailer) information. This process is called encapsulation.
+                </p>
+                <p class="content-text">
+                    On the receiving side, the process is reversed. The data travels up through the layers, with each layer removing its corresponding header information and processing the data according to its specific responsibilities. This process is called decapsulation. This systematic approach ensures that data integrity is maintained throughout the transmission process.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Encapsulation Process</div>
+                <ul class="custom-list">
+                    <li><strong>Application Layer:</strong> Creates the original data message</li>
+                    <li><strong>Presentation Layer:</strong> Adds formatting, encryption, or compression</li>
+                    <li><strong>Session Layer:</strong> Adds session management information</li>
+                    <li><strong>Transport Layer:</strong> Adds transport header (segment/datagram)</li>
+                    <li><strong>Network Layer:</strong> Adds network header (packet)</li>
+                    <li><strong>Data Link Layer:</strong> Adds frame header and trailer (frame)</li>
+                    <li><strong>Physical Layer:</strong> Converts to electrical/optical signals (bits)</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Peer-to-Peer Communication</h2>
+                <p class="content-text">
+                    An important concept in the OSI model is peer-to-peer communication. Although data physically travels down through all layers on the sending side and up through all layers on the receiving side, each layer logically communicates with its corresponding layer (peer) on the remote system. This logical communication is facilitated by the headers and control information added by each layer.
+                </p>
+                <p class="content-text">
+                    For example, the Transport layer on the sending system communicates with the Transport layer on the receiving system through the transport header information, even though the actual data must pass through the Network, Data Link, and Physical layers to reach its destination. This peer-to-peer communication model helps maintain the logical separation of concerns between different layers.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Advantages of the Layered Approach</h2>
+                <p class="content-text">
+                    The layered approach of the OSI model offers several significant advantages that have made it a fundamental concept in networking education and design. These advantages explain why the layered model concept has endured and continues to influence modern network design.
+                </p>
+            </div>
+
+            <div class="page-number">6</div>
+        </div>
+
+        <!-- Chapter 3: Detailed OSI Layers -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 3</div>
+                <div class="chapter-title">OSI Layer Details</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 7: Application Layer</h2>
+                <p class="content-text">
+                    The Application Layer is the topmost layer of the OSI model and serves as the interface between the network and the end-user applications. This layer provides network services directly to end-user applications and is responsible for identifying communication partners, determining resource availability, and synchronizing communication.
+                </p>
+                <p class="content-text">
+                    It's important to note that the Application Layer is not the application itself (like a web browser or email client), but rather the network services that these applications use to communicate over the network. The layer handles high-level protocols, representation, encoding, and dialog control.
+                </p>
+
+                <div class="subsection-title">Common Application Layer Protocols:</div>
+                <div class="protocol-grid">
+                    <div class="protocol-box">
+                        <div class="protocol-name">HTTP/HTTPS</div>
+                        <div>Web browsing and secure web communication</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">FTP/SFTP</div>
+                        <div>File transfer and secure file transfer</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">SMTP/POP3/IMAP</div>
+                        <div>Email transmission and retrieval</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">DNS</div>
+                        <div>Domain name resolution</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">DHCP</div>
+                        <div>Dynamic IP address assignment</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">Telnet/SSH</div>
+                        <div>Remote terminal access</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 6: Presentation Layer</h2>
+                <p class="content-text">
+                    The Presentation Layer, also known as the syntax layer, is responsible for data representation, encryption, compression, and translation. This layer ensures that data sent by the application layer of one system is readable by the application layer of another system, regardless of the different data formats used by the communicating systems.
+                </p>
+                <p class="content-text">
+                    The Presentation Layer handles character encoding (like ASCII, EBCDIC, Unicode), data compression algorithms, and encryption/decryption processes. It acts as a translator between the application layer and the lower layers, converting data into a format that can be transmitted over the network and then converting it back to a format that the receiving application can understand.
+                </p>
+
+                <div class="subsection-title">Key Functions:</div>
+                <ul class="custom-list">
+                    <li>Data encryption and decryption for security</li>
+                    <li>Data compression and decompression for efficiency</li>
+                    <li>Character set conversion (ASCII, Unicode, EBCDIC)</li>
+                    <li>Graphics format handling (JPEG, GIF, PNG)</li>
+                    <li>Audio and video format processing</li>
+                </ul>
+            </div>
+
+            <div class="page-number">7</div>
+        </div>
+
+        <!-- Chapter 3 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Layer 5: Session Layer</h2>
+                <p class="content-text">
+                    The Session Layer manages and controls the dialogues/connections between computers. It establishes, manages, and terminates connections between local and remote applications. This layer is responsible for session checkpointing and recovery, which allows for the resumption of communications in case of a network failure.
+                </p>
+                <p class="content-text">
+                    The Session Layer also handles session multiplexing, allowing multiple applications on a single host to maintain simultaneous sessions with applications on remote hosts. It manages full-duplex, half-duplex, or simplex operations and implements dialog control to keep track of whose turn it is to transmit data.
+                </p>
+
+                <div class="subsection-title">Session Management Functions:</div>
+                <ul class="custom-list">
+                    <li>Session establishment, maintenance, and termination</li>
+                    <li>Dialog control (half-duplex or full-duplex)</li>
+                    <li>Synchronization and checkpointing for recovery</li>
+                    <li>Session multiplexing</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 4: Transport Layer</h2>
+                <p class="content-text">
+                    The Transport Layer is responsible for end-to-end communication between processes on different hosts. It provides reliable and transparent transfer of data between end systems, and is responsible for error recovery and flow control. This layer segments data from the upper layers and adds headers to form segments (for TCP) or datagrams (for UDP).
+                </p>
+                <p class="content-text">
+                    The two most common protocols at this layer are Transmission Control Protocol (TCP) and User Datagram Protocol (UDP). TCP provides connection-oriented, reliable, ordered, and error-checked delivery of a stream of bytes. UDP, on the other hand, is a connectionless protocol that offers a faster but unreliable service, primarily used for applications where speed is more critical than guaranteed delivery (e.g., streaming video).
+                </p>
+
+                <div class="subsection-title">Key Functions:</div>
+                <ul class="custom-list">
+                    <li>Segmentation and reassembly of data</li>
+                    <li>Connection management (TCP)</li>
+                    <li>Flow control to prevent overwhelming the receiver</li>
+                    <li>Error control for reliable data transfer</li>
+                    <li>Multiplexing and demultiplexing of applications</li>
+                </ul>
+            </div>
+
+            <div class="page-number">8</div>
+        </div>
+
+        <!-- Chapter 3 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Layer 3: Network Layer</h2>
+                <p class="content-text">
+                    The Network Layer is responsible for logical addressing and routing of data packets across different networks. It determines the best path for data to travel from the source to the destination, even if they are on different networks. This layer uses logical addresses, primarily Internet Protocol (IP) addresses, to identify devices uniquely across the globe.
+                </p>
+                <p class="content-text">
+                    Routers operate at this layer, examining the destination IP address of incoming packets and forwarding them to the appropriate next hop based on their routing tables. The Network Layer also handles packet fragmentation and reassembly, if necessary, to accommodate different network technologies with varying maximum transmission unit (MTU) sizes.
+                </p>
+
+                <div class="subsection-title">Key Functions:</div>
+                <ul class="custom-list">
+                    <li>Logical addressing (IP addressing)</li>
+                    <li>Routing of packets between networks</li>
+                    <li>Packet forwarding</li>
+                    <li>Fragmentation and reassembly</li>
+                    <li>Error handling for network-level issues</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 2: Data Link Layer</h2>
+                <p class="content-text">
+                    The Data Link Layer is responsible for reliable data transfer across a physical link. It handles physical addressing (MAC addresses), framing, error detection, and flow control within a single network segment. This layer ensures that data is transmitted reliably between directly connected devices.
+                </p>
+                <p class="content-text">
+                    The Data Link Layer is often divided into two sublayers: the Logical Link Control (LLC) sublayer and the Media Access Control (MAC) sublayer. The LLC sublayer handles multiplexing of network layer protocols and provides flow control and error control. The MAC sublayer manages access to the physical medium, using mechanisms like CSMA/CD (for Ethernet) or CSMA/CA (for Wi-Fi) to prevent collisions.
+                </p>
+
+                <div class="subsection-title">Key Functions:</div>
+                <ul class="custom-list">
+                    <li>Physical addressing (MAC addressing)</li>
+                    <li>Framing of data into frames</li>
+                    <li>Error detection and correction for physical link errors</li>
+                    <li>Flow control for data transmission over the link</li>
+                    <li>Media access control</li>
+                </ul>
+            </div>
+
+            <div class="page-number">9</div>
+        </div>
+
+        <!-- Chapter 3 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Layer 1: Physical Layer</h2>
+                <p class="content-text">
+                    The Physical Layer is the lowest layer of the OSI model and deals with the physical transmission of raw bit streams over a physical medium. It defines the electrical, mechanical, procedural, and functional specifications for activating, maintaining, and deactivating the physical link between communicating devices.
+                </p>
+                <p class="content-text">
+                    This layer is concerned with how bits are represented as electrical signals, light pulses, or radio waves, and how they are transmitted over cables, fiber optics, or wireless channels. It defines hardware specifications such as connectors, voltage levels, data rates, and physical topologies. Devices like hubs, repeaters, and network cables operate at this layer.
+                </p>
+
+                <div class="subsection-title">Key Functions:</div>
+                <ul class="custom-list">
+                    <li>Physical characteristics of interfaces and media</li>
+                    <li>Representation of bits (encoding)</li>
+                    <li>Data rate (transmission rate)</li>
+                    <li>Synchronization of bits</li>
+                    <li>Physical topology (bus, star, ring)</li>
+                    <li>Transmission mode (simplex, half-duplex, full-duplex)</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">OSI Model Summary</div>
+                <p>The OSI model, while theoretical, provides an invaluable framework for understanding the complex interactions within a network. Each layer performs a distinct set of functions, working together to facilitate seamless communication from one application to another. This modularity simplifies network design, troubleshooting, and the development of new technologies.</p>
+            </div>
+
+            <div class="page-number">10</div>
+        </div>
+
+        <!-- Chapter 4: The TCP/IP Model -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 4</div>
+                <div class="chapter-title">The TCP/IP Model</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Overview and Development</h2>
+                <p class="content-text">
+                    The Transmission Control Protocol/Internet Protocol (TCP/IP) model is a practical and widely adopted network model that forms the foundation of the Internet. Developed in the 1970s by the U.S. Department of Defense (DoD), it was designed to be a robust and flexible framework for communication across diverse networks, even under challenging conditions. Unlike the OSI model, which is a conceptual reference, TCP/IP was built with implementation in mind, directly leading to the protocols that power today's global network.
+                </p>
+                <p class="content-text">
+                    The TCP/IP model is often described as having four layers, though some interpretations expand it to five. Its strength lies in its simplicity and its ability to connect disparate networks, making it highly adaptable and scalable. It defines how data should be formatted, addressed, transmitted, routed, and received.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">The Four-Layer Architecture</h2>
+                <p class="content-text">
+                    The TCP/IP model consolidates the seven layers of the OSI model into a more streamlined four-layer structure. This consolidation reflects the practical implementation of networking protocols.
+                </p>
+            </div>
+
+            <div class="tcpip-layers">
+                <div class="tcpip-layer">
+                    <h3>4. Application Layer</h3>
+                    <p>Corresponds to OSI Layers 5, 6, 7 (Session, Presentation, Application).</p>
+                </div>
+                <div class="tcpip-layer">
+                    <h3>3. Transport Layer</h3>
+                    <p>Corresponds to OSI Layer 4 (Transport).</p>
+                </div>
+                <div class="tcpip-layer">
+                    <h3>2. Internet Layer</h3>
+                    <p>Corresponds to OSI Layer 3 (Network).</p>
+                </div>
+                <div class="tcpip-layer">
+                    <h3>1. Network Access Layer</h3>
+                    <p>Corresponds to OSI Layers 1, 2 (Physical, Data Link).</p>
+                </div>
+            </div>
+
+            <div class="subsection-title">Detailed Breakdown of TCP/IP Layers:</div>
+            <div class="content-section">
+                <h2 class="section-title">Layer 4: Application Layer</h2>
+                <p class="content-text">
+                    This layer is where applications and end-user processes interact with the network. It combines the functionalities of the OSI's Application, Presentation, and Session layers. Protocols at this layer handle high-level application-specific tasks such as file transfer, email, web browsing, and remote access.
+                </p>
+                <p class="content-text">
+                    Examples include HTTP (Hypertext Transfer Protocol), FTP (File Transfer Protocol), SMTP (Simple Mail Transfer Protocol), DNS (Domain Name System), and Telnet. This layer ensures that data is properly formatted and presented to the user, and manages the communication sessions.
+                </p>
+            </div>
+
+            <div class="page-number">11</div>
+        </div>
+
+        <!-- Chapter 4 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Layer 3: Transport Layer</h2>
+                <p class="content-text">
+                    Similar to the OSI Transport Layer, this layer provides end-to-end communication between applications. Its primary responsibility is to ensure that data segments are delivered correctly and efficiently between the source and destination hosts. It handles segmentation of data from the Application Layer and reassembly at the destination.
+                </p>
+                <p class="content-text">
+                    The two core protocols here are TCP (Transmission Control Protocol) and UDP (User Datagram Protocol). TCP provides reliable, connection-oriented communication with flow control and error correction, suitable for applications like web browsing and file transfer. UDP offers a faster, connectionless, and unreliable service, often used for real-time applications like video streaming or online gaming where speed is prioritized over guaranteed delivery.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 2: Internet Layer</h2>
+                <p class="content-text">
+                    This layer, often referred to as the Network Layer in the context of the OSI model, is responsible for logical addressing (IP addresses) and routing of data packets across different networks. Its main protocol is the Internet Protocol (IP), which defines how packets are addressed and routed from the source network to the destination network.
+                </p>
+                <p class="content-text">
+                    The Internet Layer ensures that packets can traverse multiple interconnected networks (internetworks). Routers operate at this layer, using IP addresses to determine the best path for packet delivery. Other protocols like ICMP (Internet Control Message Protocol) for error reporting and IGMP (Internet Group Management Protocol) for multicasting also reside here.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Layer 1: Network Access Layer</h2>
+                <p class="content-text">
+                    This is the lowest layer of the TCP/IP model, combining the functionalities of the OSI's Physical and Data Link layers. It is responsible for the physical transmission of data over the network medium and for managing access to that medium. This layer deals with hardware addressing (MAC addresses), framing of data, and error detection on the local network segment.
+                </p>
+                <p class="content-text">
+                    It includes technologies like Ethernet, Wi-Fi (802.11), Token Ring, and Frame Relay. The Network Access Layer defines how data is physically sent and received, including electrical signals, cabling, and network interface cards (NICs).
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">TCP/IP Model Summary</div>
+                <p>The TCP/IP model is the cornerstone of modern networking, directly implemented in the Internet. Its layered approach, though simpler than OSI, effectively organizes the complex tasks of network communication into manageable units, enabling global connectivity and the vast array of online services we use daily.</p>
+            </div>
+
+            <div class="page-number">12</div>
+        </div>
+
+        <!-- Chapter 5: TCP/IP Protocols and Services -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 5</div>
+                <div class="chapter-title">TCP/IP Protocols and Services</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Core Protocols of TCP/IP</h2>
+                <p class="content-text">
+                    The TCP/IP model is a suite of protocols, meaning it's a collection of communication rules that work together. The most fundamental protocols are TCP and IP, but many others contribute to the internet's functionality.
+                </p>
+
+                <div class="subsection-title">Internet Protocol (IP)</div>
+                <p class="content-text">
+                    <strong>IP</strong> is the primary protocol of the Internet Layer. It is responsible for addressing and routing packets of data so that they can travel across networks and arrive at the correct destination. IP is a connectionless protocol, meaning it does not establish a connection before sending data; each packet is treated independently. IP addresses (IPv4 and IPv6) are used to uniquely identify devices on a network.
+                </p>
+
+                <div class="subsection-title">Transmission Control Protocol (TCP)</div>
+                <p class="content-text">
+                    <strong>TCP</strong> is a connection-oriented protocol at the Transport Layer. It provides reliable, ordered, and error-checked delivery of a stream of bytes between applications. TCP establishes a connection (a "handshake") before data transmission, ensures that all data arrives, retransmits lost packets, and reassembles segments in the correct order. This reliability makes it suitable for applications like web browsing (HTTP), email (SMTP), and file transfer (FTP).
+                </p>
+
+                <div class="subsection-title">User Datagram Protocol (UDP)</div>
+                <p class="content-text">
+                    <strong>UDP</strong> is a connectionless protocol also at the Transport Layer. Unlike TCP, UDP does not guarantee delivery, order, or error checking. It simply sends datagrams without establishing a connection. This makes it faster and more efficient for applications where some data loss is acceptable, such as streaming video, voice over IP (VoIP), and online gaming.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">TCP vs. UDP: When to Use Which?</div>
+                <ul class="custom-list">
+                    <li><strong>TCP:</strong> For applications requiring high reliability, such as web browsing, email, file transfers.</li>
+                    <li><strong>UDP:</strong> For applications where speed is critical and some data loss is tolerable, such as video streaming, online gaming, DNS queries.</li>
+                </ul>
+            </div>
+
+            <div class="page-number">13</div>
+        </div>
+
+        <!-- Chapter 5 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Application Layer Protocols and Services</h2>
+                <p class="content-text">
+                    The Application Layer of the TCP/IP model hosts a wide array of protocols that enable various network services used by end-users.
+                </p>
+
+                <div class="protocol-grid">
+                    <div class="protocol-box">
+                        <div class="protocol-name">HTTP/HTTPS</div>
+                        <div>(Hypertext Transfer Protocol / Secure) - For web browsing.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">DNS</div>
+                        <div>(Domain Name System) - Translates domain names to IP addresses.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">FTP</div>
+                        <div>(File Transfer Protocol) - For transferring files between computers.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">SMTP</div>
+                        <div>(Simple Mail Transfer Protocol) - For sending email.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">POP3/IMAP</div>
+                        <div>(Post Office Protocol 3 / Internet Message Access Protocol) - For receiving email.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">Telnet</div>
+                        <div>(Telecommunication Network) - For remote command-line access (unsecure).</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">SSH</div>
+                        <div>(Secure Shell) - For secure remote command-line access.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">DHCP</div>
+                        <div>(Dynamic Host Configuration Protocol) - Assigns IP addresses dynamically.</div>
+                    </div>
+                    <div class="protocol-box">
+                        <div class="protocol-name">SNMP</div>
+                        <div>(Simple Network Management Protocol) - For network device management.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">The Power of Interoperability</div>
+                <p>The success of the TCP/IP suite lies in its ability to enable diverse devices and applications to communicate seamlessly. Each protocol performs a specific function, contributing to a robust and highly interconnected global network.</p>
+            </div>
+
+            <div class="page-number">14</div>
+        </div>
+
+        <!-- Chapter 6: Model Comparison and Analysis -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 6</div>
+                <div class="chapter-title">Model Comparison and Analysis</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">OSI vs. TCP/IP: Similarities and Differences</h2>
+                <p class="content-text">
+                    While both the OSI and TCP/IP models are layered architectures that describe network communication, they differ in their origins, number of layers, and practical application. Understanding these distinctions is crucial for grasping their respective roles in networking.
+                </p>
+
+                <div class="subsection-title">Similarities:</div>
+                <ul class="custom-list">
+                    <li>Both are layered models.</li>
+                    <li>Both have Application layers that handle high-level protocols.</li>
+                    <li>Both have Transport and Network (Internet) layers.</li>
+                    <li>Both are used to guide the development of network standards and devices.</li>
+                    <li>Both support connection-oriented and connectionless communication.</li>
+                </ul>
+
+                <div class="subsection-title">Key Differences:</div>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>OSI Model</th>
+                            <th>TCP/IP Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Origin</strong></td>
+                            <td>Theoretical, conceptual standard (ISO).</td>
+                            <td>Practical, implemented standard (DoD).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Number of Layers</strong></td>
+                            <td>7 layers.</td>
+                            <td>4 or 5 layers.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Development</strong></td>
+                            <td>Developed before protocols were invented.</td>
+                            <td>Developed after protocols were invented.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Layer Combination</strong></td>
+                            <td>Distinct Presentation and Session layers.</td>
+                            <td>Presentation and Session layers are combined into the Application layer. Data Link and Physical layers are combined into Network Access.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reliability</strong></td>
+                            <td>Connection-oriented at Network layer (OSI network layer can be connection-oriented or connectionless, but the model emphasizes connection-oriented).</td>
+                            <td>Connectionless at Internet layer (IP). Connection-oriented (TCP) and connectionless (UDP) at Transport layer.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Strictness</strong></td>
+                            <td>More rigid, defines specific functions for each layer.</td>
+                            <td>More flexible, less strict definition of functions for some layers.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usage</strong></td>
+                            <td>Primarily a reference model for teaching, design, and troubleshooting.</td>
+                            <td>The actual protocol suite used for the Internet and most modern networks.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="page-number">15</div>
+        </div>
+
+        <!-- Chapter 6 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Why TCP/IP Prevailed</h2>
+                <p class="content-text">
+                    Despite the OSI model's comprehensive nature and theoretical elegance, the TCP/IP model became the dominant architecture for the Internet. Several factors contributed to this:
+                </p>
+                <ul class="custom-list">
+                    <li><strong>Early Adoption:</strong> TCP/IP was developed earlier and gained significant traction through its use in ARPANET, the precursor to the Internet.</li>
+                    <li><strong>Practicality:</strong> TCP/IP was designed as a working protocol suite, making it immediately implementable and testable. The OSI model was developed as a theoretical standard first, making its practical implementation more challenging.</li>
+                    <li><strong>Simplicity:</strong> With fewer layers, TCP/IP is often perceived as simpler to understand and implement, especially for developers.</li>
+                    <li><strong>Robustness:</strong> TCP/IP was built with resilience and fault tolerance in mind, crucial for a decentralized network like the Internet.</li>
+                    <li><strong>Open Standards:</strong> The protocols within the TCP/IP suite were openly published and freely available, encouraging widespread adoption and innovation.</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <div class="highlight-title">Complementary, Not Conflicting</div>
+                <p>While TCP/IP is the practical standard, the OSI model remains invaluable. It provides a more granular and detailed conceptual framework that helps in understanding the specific functions occurring at each stage of network communication. Many network professionals use the OSI model as a reference when troubleshooting or designing network solutions, even if the underlying protocols are TCP/IP based.</p>
+            </div>
+
+            <div class="page-number">16</div>
+        </div>
+
+        <!-- Chapter 7: Practical Applications -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 7</div>
+                <div class="chapter-title">Practical Applications</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Troubleshooting Network Issues</h2>
+                <p class="content-text">
+                    Network models, particularly the OSI model, provide a systematic approach to diagnosing and resolving network problems. By understanding which layer is responsible for specific functions, network administrators can narrow down the potential cause of an issue. This "layered troubleshooting" approach saves time and effort.
+                </p>
+                <p class="content-text">
+                    For example, if a user cannot access a website, a troubleshooter might start at the Application Layer (e.g., check browser settings, DNS resolution). If that fails, they might move down to the Transport Layer (e.g., check firewall blocking ports), then the Network Layer (e.g., check IP configuration, routing), and so on, until the root cause is identified. This structured method is far more efficient than random trial-and-error.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">Troubleshooting Example: "Can't access the Internet"</div>
+                <ul class="custom-list">
+                    <li><strong>Application Layer:</strong> Is the browser working? Can other applications access the network? (e.g., email client)</li>
+                    <li><strong>Presentation/Session Layer:</strong> Are there encryption issues? Is the session being maintained? (less common for basic internet access)</li>
+                    <li><strong>Transport Layer:</strong> Is a firewall blocking TCP/UDP ports? Is the application trying to use a blocked port?</li>
+                    <li><strong>Network Layer:</strong> Is the device getting an IP address? Is the default gateway correct? Can it ping external IP addresses?</li>
+                    <li><strong>Data Link Layer:</strong> Is the network adapter enabled? Is the MAC address correct? Are there physical connection issues to the switch/router?</li>
+                    <li><strong>Physical Layer:</strong> Is the cable plugged in? Are the link lights on? Is the Wi-Fi signal strong?</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Network Design and Implementation</h2>
+                <p class="content-text">
+                    Network models serve as essential guides for designing and implementing new network infrastructures. Architects use the layered approach to decide where to place specific network devices, which protocols to use, and how to segment the network for optimal performance and security.
+                </p>
+                <p class="content-text">
+                    For instance, understanding the Network Layer helps in designing IP addressing schemes and routing protocols for large enterprise networks. Knowledge of the Data Link Layer is crucial for selecting appropriate switching technologies (e.g., Ethernet switches) and managing MAC addresses. This systematic design ensures scalability, efficiency, and compatibility.
+                </p>
+            </div>
+
+            <div class="page-number">17</div>
+        </div>
+
+        <!-- Chapter 7 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">Network Security Implications</h2>
+                <p class="content-text">
+                    Network security greatly benefits from the layered understanding provided by network models. Security professionals can identify vulnerabilities and implement controls at specific layers. For example:
+                </p>
+                <ul class="custom-list">
+                    <li><strong>Application Layer:</strong> Web application firewalls (WAFs) protect against attacks like SQL injection and cross-site scripting.</li>
+                    <li><strong>Presentation Layer:</strong> SSL/TLS encryption ensures data confidentiality and integrity during transmission.</li>
+                    <li><strong>Session Layer:</strong> Session hijacking prevention mechanisms.</li>
+                    <li><strong>Transport Layer:</strong> Firewalls block or allow specific TCP/UDP ports to control application access.</li>
+                    <li><strong>Network Layer:</strong> Routers and firewalls filter traffic based on IP addresses; Intrusion Detection/Prevention Systems (IDS/IPS) monitor for malicious network activity.</li>
+                    <li><strong>Data Link Layer:</strong> MAC address filtering, port security on switches to prevent unauthorized devices.</li>
+                    <li><strong>Physical Layer:</strong> Physical security of network equipment, secure cabling.</li>
+                </ul>
+                <p class="content-text">
+                    By understanding the functions of each layer, security measures can be precisely applied, creating a multi-layered defense strategy that is more resilient to attacks.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">The "Defense-in-Depth" Principle</div>
+                <p>The layered nature of network models directly supports the "defense-in-depth" security principle, where multiple layers of security controls are implemented. If one layer is breached, others can still provide protection, significantly enhancing overall network security.</p>
+            </div>
+
+            <div class="page-number">18</div>
+        </div>
+
+        <!-- Chapter 8: Future of Network Models -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 8</div>
+                <div class="chapter-title">Future of Network Models</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Relevance in Emerging Technologies</h2>
+                <p class="content-text">
+                    Despite their age, the fundamental principles of the OSI and TCP/IP models remain highly relevant in the context of emerging networking technologies. These models provide the foundational understanding necessary to grasp how new innovations integrate into existing network architectures.
+                </p>
+                <ul class="custom-list">
+                    <li><strong>Cloud Computing:</strong> Virtualized networks in the cloud still adhere to layered communication, with virtual machines and containers communicating via virtual network interfaces that map to the lower layers.</li>
+                    <li><strong>Internet of Things (IoT):</strong> IoT devices, though often resource-constrained, still rely on layered protocols (often simplified TCP/IP variants) to communicate with gateways and cloud platforms.</li>
+                    <li><strong>Software-Defined Networking (SDN):</strong> SDN separates the control plane from the data plane, but the underlying data forwarding still operates according to principles defined by network models. The conceptual layers help in understanding how this separation works.</li>
+                    <li><strong>5G Networks:</strong> The architecture of 5G, while complex, builds upon established networking principles, and its various slices and functions can be mapped back to the core ideas of layered communication.</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Evolution and Adaptation</h2>
+                <p class="content-text">
+                    Network models are not static; they evolve conceptually to accommodate new technologies and paradigms. While the core seven or four layers remain, their interpretation and the specific protocols within them adapt. For instance, the rise of application-layer protocols for real-time communication (like WebRTC) or specialized IoT protocols (like MQTT) shows the continuous evolution within the existing framework.
+                </p>
+                <p class="content-text">
+                    The models provide a stable reference point against which new technologies can be compared and understood, ensuring that the underlying principles of data communication remain consistent even as the technologies themselves advance rapidly.
+                </p>
+            </div>
+
+            <div class="page-number">19</div>
+        </div>
+
+        <!-- Chapter 8 Continued -->
+        <div class="page">
+            <div class="content-section">
+                <h2 class="section-title">The Enduring Legacy</h2>
+                <p class="content-text">
+                    In conclusion, the OSI and TCP/IP models, despite their differences, offer complementary perspectives on network communication. The OSI model provides a detailed, abstract framework for understanding network functions, while the TCP/IP model is the practical, widely implemented standard that powers the global Internet.
+                </p>
+                <p class="content-text">
+                    Their enduring legacy lies in their ability to simplify complex network interactions, promote interoperability, aid in troubleshooting, and guide the design of future network technologies. As long as data needs to travel from one point to another across interconnected systems, the principles embodied in these foundational network models will remain indispensable.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="highlight-title">Continuous Learning</div>
+                <p>The field of networking is constantly evolving. A strong grasp of network models provides the essential conceptual toolkit for understanding new protocols, architectures, and security challenges that emerge in this dynamic landscape. Continuous learning and adaptation are key to staying current in network technology.</p>
+            </div>
+
+            <div class="page-number">20</div>
+        </div>
+
+        <!-- References and Bibliography -->
+        <div class="page">
+            <div class="chapter-header">
+                <div class="chapter-number">Appendix</div>
+                <div class="chapter-title">References and Bibliography</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Sources Consulted</h2>
+                <p class="content-text">
+                    This digital book was compiled using information from various reputable sources on computer networking and data communication. The following references were particularly helpful in detailing the OSI and TCP/IP models, their layers, protocols, and practical applications.
+                </p>
+
+                <div class="reference-item">
+                    <strong>Forouzan, B. A.</strong> (2017). <em>Data Communications and Networking</em> (5th ed.). McGraw-Hill Education.
+                    <br>Provides comprehensive coverage of network models, protocols, and technologies.
+                </div>
+                <div class="reference-item">
+                    <strong>Kurose, J. F., & Ross, K. W.</strong> (2017). <em>Computer Networking: A Top-Down Approach</em> (7th ed.). Pearson.
+                    <br>Offers a detailed explanation of TCP/IP and its protocols, with a focus on Internet architecture.
+                </div>
+                <div class="reference-item">
+                    <strong>Cisco Networking Academy.</strong> (n.d.). <em>Introduction to Networks (ITN) Course Material.</em>
+                    <br>Educational resources that extensively cover the OSI and TCP/IP models.
+                </div>
+                <div class="reference-item">
+                    <strong>GeeksforGeeks.</strong> (n.d.). <em>OSI Model and TCP/IP Model articles.</em> Retrieved from <a href="https://www.geeksforgeeks.org/" target="_blank">https://www.geeksforgeeks.org/</a>
+                    <br>A popular online portal for computer science and networking concepts.
+                </div>
+                <div class="reference-item">
+                    <strong>Cloudflare.</strong> (n.d.). <em>Learning Center articles on OSI and TCP/IP.</em> Retrieved from <a href="https://www.cloudflare.com/learning/" target="_blank">https://www.cloudflare.com/learning/</a>
+                    <br>Provides accessible explanations of networking fundamentals.
+                </div>
+                <div class="reference-item">
+                    <strong>IBM.</strong> (n.d.). <em>What is TCP/IP?</em> Retrieved from <a href="https://www.ibm.com/topics/tcpip" target="_blank">https://www.ibm.com/topics/tcpip</a>
+                    <br>An overview of the TCP/IP protocol suite from a major technology vendor.
+                </div>
+                <div class="reference-item">
+                    <strong>Wikipedia.</strong> (n.d.). <em>OSI model and TCP/IP model.</em> Retrieved from <a href="https://en.wikipedia.org/wiki/OSI_model" target="_blank">https://en.wikipedia.org/wiki/OSI_model</a>
+                    <br>General reference for historical context and conceptual understanding.
+                </div>
+            </div>
+
+            <div class="page-number">21</div>
+        </div>
+    </div>
+</body>
+</html>
